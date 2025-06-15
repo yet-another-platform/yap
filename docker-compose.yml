@@ -1,0 +1,48 @@
+﻿# Docker compose file for local development
+services:
+  database-postgresql:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./PostgreSQL/Init.Development.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - services
+
+  gateway:
+    image: gateway 
+    build:
+      context: .
+      dockerfile: src/Services/Gateway/Dockerfile
+      args:
+        CONFIGURATION: Development
+    ports:
+      - "40000:40000"
+    depends_on:
+      - database-postgresql
+    networks:
+      - services
+
+  users-service-api:
+    image: users-service-api
+    build:
+      context: .
+      dockerfile: src/Services/Users/Users.API/Dockerfile
+      args:
+        CONFIGURATION: Development
+    depends_on:
+      - database-postgresql
+      - gateway
+    networks:
+      - services
+
+networks:
+  services:
+
+volumes:
+  postgres:

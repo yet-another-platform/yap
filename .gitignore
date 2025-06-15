@@ -1,0 +1,10 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Cac
+*.Production.*
+*.Staging.*
+.idea
+*.DotSettings.user
+*.sln

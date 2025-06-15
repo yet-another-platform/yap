@@ -22,7 +22,7 @@ public abstract class DatabaseServiceBase<T>(Func<IDbConnection> connectionFacto
         return await connection.QuerySingleAsync<T>(query, new { id });
     }
 
-    protected async Task<T> GetAsyncInternal(Guid id)
+    protected async Task<T?> GetAsyncInternal(Guid id)
     {
         string query;
         if (IsSoftDeletable)
@@ -44,7 +44,7 @@ public abstract class DatabaseServiceBase<T>(Func<IDbConnection> connectionFacto
         }
 
         using var connection = ConnectionFactory();
-        return await connection.QuerySingleAsync<T>(query, new { id });
+        return await connection.QuerySingleOrDefaultAsync<T>(query, new { id });
     }
 
     protected async Task<bool> DeleteAsyncInteral(Guid id)
@@ -83,13 +83,13 @@ public abstract class DatabaseServiceBase<T>(Func<IDbConnection> connectionFacto
     {
         string query = IsSoftDeletable ? $"""
                                        SELECT EXISTS (
-                                           SELECT 1 FROM app_talk.{tableName}
+                                           SELECT 1 FROM {tableName}
                                                WHERE {IIdentifiable.ColumnName} = @id
                                                   AND {IDeleted.ColumnName} = false;
                                        );
                                    """ : $"""
                                               SELECT EXISTS (
-                                                  SELECT 1 FROM app_talk.{tableName}
+                                                  SELECT 1 FROM {tableName}
                                                       WHERE {IIdentifiable.ColumnName} = @id
                                               );
                                           """;

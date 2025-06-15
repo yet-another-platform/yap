@@ -2,6 +2,6 @@ namespace Types.DataTransferObjects;
 
 public class GeneralErrorWrapper
 {
-    public readonly bool Error = true;
+    public bool Error { get; private init; } = true;
     public required string Message { get; init; }
 }

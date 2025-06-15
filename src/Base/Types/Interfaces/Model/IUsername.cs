@@ -1,9 +1,9 @@
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.RegularExpressions;
 using Types.Extensions;
 
 namespace Types.Interfaces.Model;
 
-public interface IUsername
+public partial interface IUsername
 {
     /// <summary>
     /// Username value
@@ -11,16 +11,21 @@ public interface IUsername
     public string Username { get; set; }
 
     public const string ColumnName = "username";
-    public const int MaxLength = 64;
-    public const int MinLength = 2;
+    
+    public const int MaxLength = 64; // Always update the value in validation regex as well!!
+    public const int MinLength = 2; // Always update the value in validation regex as well!!
 
-    public static bool Validate(IUsername? value)
+    public static bool Validate(IUsername value)
     {
-        if (value is null)
+        if (string.IsNullOrWhiteSpace(value.Username))
         {
             return false;
         }
-
-        return value.Username.Length is <= MaxLength and >= MinLength && value.Username.IsAsciiOnly();
+        
+        return ValidationRegex().IsMatch(value.Username);
     }
+
+    // The length must mach MaxLength and MinLength constants!
+    [GeneratedRegex("^[a-zA-Z0-9]{2,64}$")]
+    private static partial Regex ValidationRegex();
 }

@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Types.Helpers;
+using Types.Types;
 using Types.Types.Option;
 using Types.Validation;
 using Users.API.DatabaseServices.Interfaces;
@@ -19,13 +20,33 @@ public class UserManager(
     IUserDatabaseService userDatabaseService,
     Validator validator)
 {
-    public async Task<Option<RegistrationResultDto>> RegisterAsync(RegisterDto registerDto)
+    public async Task<Option<LoginResultDto>> RegisterAsync(RegisterDto registerDto)
     {
         var validationResult = validator.Validate(registerDto);
         if (!validationResult.IsValid)
         {
             return new Error
                 { Message = string.Join('\n', validationResult.Errors.Select(e => e.Message)) };
+        }
+        
+        var existingUser = await userDatabaseService.GetByEmailAsync(registerDto.Email!, true);
+        if (existingUser is not null)
+        {
+            return new Error
+            {
+                Message = "Email is already registered",
+                Type = ErrorType.AlreadyExists
+            };
+        }
+        
+        existingUser = await userDatabaseService.GetByUsernameAsync(registerDto.Username, true);
+        if (existingUser is not null)
+        {
+            return new Error
+            {
+                Message = "Username is already registered",
+                Type = ErrorType.AlreadyExists
+            };
         }
 
         var user = new User
@@ -52,11 +73,88 @@ public class UserManager(
             return new Error { Message = "Failed to create a token" };
         }
 
-        return new RegistrationResultDto
+        return new LoginResultDto
         {
             Token = tokenResult.Value,
             User = user.ToFullDto()
         };
+    }
+
+    public async Task<Option<LoginResultDto>> LoginAsync(LoginDto loginDto)
+    {
+        if (string.IsNullOrWhiteSpace(loginDto.Identifier))
+        {
+            return new Error
+            {
+                Message = "Invalid login identifier",
+                Type = ErrorType.BadRequest
+            };
+        }
+
+        if (string.IsNullOrWhiteSpace(loginDto.Password))
+        {
+            return new Error
+            {
+                Message = "Invalid login password",
+                Type = ErrorType.BadRequest
+            };
+        }
+
+        var user = await userDatabaseService.GetByEmailAsync(loginDto.Identifier);
+        if (user == null)
+        {
+            user = await userDatabaseService.GetByUsernameAsync(loginDto.Identifier);
+        }
+
+        if (user is null)
+        {
+            return new Error
+            {
+                Message = "User not found",
+                Type = ErrorType.NotFound
+            };
+        }
+        
+        bool isCorrectPassword = PasswordHelper.ValidatePassword(loginDto.Password, user.PasswordHash!);
+        if (!isCorrectPassword)
+        {
+            return new Error
+            {
+                Message = "Wrong password",
+                Type = ErrorType.BadRequest
+            };
+        }
+        
+        var tokenResult = GenerateJwt(user);
+        if (!tokenResult.Ok)
+        {
+            return new Error
+            {
+                Message = "Failed to create token",
+                Type = ErrorType.ServiceError
+            };
+        }
+
+        return new LoginResultDto
+        {
+            User = user.ToFullDto(),
+            Token = tokenResult.Value
+        };
+    }
+
+    public async Task<Option<User>> GetAsync(GuidChecked userId)
+    {
+       var user = await userDatabaseService.GetAsync(userId);
+       if (user is null)
+       {
+           return new Error
+           {
+               Message = "User not found",
+               Type = ErrorType.NotFound
+           };
+       }
+
+       return user;
     }
 
     private Option<string> GenerateJwt(User user)

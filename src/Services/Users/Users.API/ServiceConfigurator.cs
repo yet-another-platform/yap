@@ -1,11 +1,13 @@
 using System.Data;
 using System.Text;
 using System.Text.Json.Serialization;
+using Dapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Protocols.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Npgsql;
+using Types.Handlers;
 using Types.Validation;
 using Users.API.Database;
 using Users.API.DatabaseServices;
@@ -69,7 +71,8 @@ public static class ServiceConfigurator
             options.UseNpgsql(x => x.MigrationsAssembly("Users.API"));
         });
 
-        Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+        DefaultTypeMap.MatchNamesWithUnderscores = true;
+        SqlMapper.AddTypeHandler(new GuidCheckedTypeHandler());
 
         builder.Services.AddScoped<IDbConnection>(_ => new NpgsqlConnection(databaseConnectionString));
         builder.Services.AddScoped<Func<IDbConnection>>(_ => () => new NpgsqlConnection(databaseConnectionString));

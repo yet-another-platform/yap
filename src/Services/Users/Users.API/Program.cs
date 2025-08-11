@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Service.Extensions;
 using Users.API;
 using Users.API.Database;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Configure();
+await builder.ConfigureAsync<ServiceConfigurator>();
 
 var app = builder.Build();
 

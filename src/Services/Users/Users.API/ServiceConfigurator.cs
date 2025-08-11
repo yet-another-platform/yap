@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Protocols.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Npgsql;
+using Service.Interfaces;
 using Types.Handlers;
 using Types.Validation;
 using Users.API.Database;
@@ -16,18 +17,18 @@ using Users.API.Managers;
 
 namespace Users.API;
 
-public static class ServiceConfigurator
+public class ServiceConfigurator : IServiceConfigurator
 {
-    public static WebApplicationBuilder Configure(this WebApplicationBuilder builder)
+    public WebApplicationBuilder Configure(WebApplicationBuilder builder)
     {
-        builder.ConfigureGeneral();
-        builder.ConfigureDatabase();
-        builder.ConfigureManagers();
-        builder.ConfigureLocalServices();
+        ConfigureGeneral(builder);
+        ConfigureDatabase(builder);
+        ConfigureManagers(builder);
+        ConfigureLocalServices(builder);
         return builder;
     }
 
-    private static void ConfigureGeneral(this WebApplicationBuilder builder)
+    private static void ConfigureGeneral(WebApplicationBuilder builder)
     {
         var configuration = builder.Configuration;
 
@@ -54,7 +55,7 @@ public static class ServiceConfigurator
         builder.Services.AddMvc();
     }
 
-    private static void ConfigureDatabase(this WebApplicationBuilder builder)
+    private static void ConfigureDatabase(WebApplicationBuilder builder)
     {
         var configuration = builder.Configuration;
         string databaseConnectionString = configuration.GetConnectionString("PostgreSQL") ??
@@ -81,12 +82,12 @@ public static class ServiceConfigurator
         builder.Services.AddScoped<IUserDatabaseService, UserDatabaseService>();
     }
 
-    private static void ConfigureManagers(this WebApplicationBuilder builder)
+    private static void ConfigureManagers(WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<UserManager>();
     }
 
-    private static void ConfigureLocalServices(this WebApplicationBuilder builder)
+    private static void ConfigureLocalServices(WebApplicationBuilder builder)
     {
         builder.Services.AddSingleton<Validator>();
     }

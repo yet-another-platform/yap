@@ -54,9 +54,10 @@ public class UserManager(
             Email = registerDto.Email,
             Username = registerDto.Username,
             PasswordHash = PasswordHelper.GetPasswordHash(registerDto.Password),
-            State = UserState.NotActivated,
-            Created = DateTimeOffset.UtcNow
+            State = UserState.Activated
         };
+
+        user.Updated = user.Created = DateTimeOffset.UtcNow;
 
         var createResult = await userDatabaseService.CreateAsync(user);
         if (createResult == Guid.Empty)

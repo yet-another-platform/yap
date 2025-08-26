@@ -50,6 +50,19 @@ services:
     networks:
       - services
 
+  hubs-service-api:
+    image: hubs-service-api
+    build:
+      context: .
+      dockerfile: src/Services/Hubs/Hubs.API/Dockerfile
+      args:
+        CONFIGURATION: Development
+    depends_on:
+      - database-postgresql
+      - gateway
+    networks:
+      - services
+
 networks:
   services:
 

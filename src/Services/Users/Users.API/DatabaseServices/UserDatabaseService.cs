@@ -5,14 +5,10 @@ using Database;
 using Database.Extensions;
 using Types.Interfaces.Model;
 using Types.Types;
-using Types.Types.Option;
 using Users.API.Constants.Database;
-using Users.API.Database;
 using Users.API.DatabaseServices.Interfaces;
 using Users.API.Extensions;
-using Users.API.Helpers;
 using Users.API.Models;
-using Users.Domain.Enums;
 
 namespace Users.API.DatabaseServices;
 

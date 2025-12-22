@@ -5,8 +5,8 @@ using Types.Interfaces.Model;
 
 namespace Hubs.API.Models;
 
-[Table(HubMembershipsTable.TableName)]
-public class HubMembership : IIdentifiable, IHubIdentifiable, IUserIdentifiable, ICreated
+[Table(ChannelMembershipsTable.TableName)]
+public class ChannelMembership : IIdentifiable, IChannelIdentifiable, IUserIdentifiable, ICreated
 {
     /// <inheritdoc />
     [Key]
@@ -14,9 +14,9 @@ public class HubMembership : IIdentifiable, IHubIdentifiable, IUserIdentifiable,
     public Guid Id { get; set; }
 
     /// <inheritdoc />
-    [Column(IHubIdentifiable.ColumnName)]
-    [ForeignKey(HubsTable.TableName)]
-    public Guid HubId { get; set; }
+    [Column(IChannelIdentifiable.ColumnName)]
+    [ForeignKey(ChannelsTable.TableName)]
+    public Guid ChannelId { get; set; }
 
     /// <inheritdoc />
     [Column(IUserIdentifiable.ColumnName)]

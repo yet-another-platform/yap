@@ -3,7 +3,7 @@ using Types.Extensions;
 
 namespace Types.Interfaces.Model;
 
-public partial interface IName
+public interface IName
 {
     /// <summary>
     /// Name value
@@ -12,20 +12,11 @@ public partial interface IName
 
     public const string ColumnName = "name";
     
-    public const int MaxLength = 128; // Always update the value in validation regex as well!!
-    public const int MinLength = 2; // Always update the value in validation regex as well!!
+    public const int MaxLength = 32;
+    public const int MinLength = 2;
 
     public static bool Validate(IName value)
     {
-        if (string.IsNullOrWhiteSpace(value.Name))
-        {
-            return false;
-        }
-        
-        return ValidationRegex().IsMatch(value.Name);
+        return value.Name.Length is >= MinLength and <= MaxLength;
     }
-
-    // The length must mach MaxLength and MinLength constants!
-    [GeneratedRegex("^[a-zA-Z0-9]{2,128}$")]
-    private static partial Regex ValidationRegex();
 }

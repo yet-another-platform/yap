@@ -5,35 +5,38 @@ using Types.Interfaces.Model;
 
 namespace Hubs.API.Models;
 
-[Table(HubsTable.TableName)]
-public class Hub : IIdentifiable, IUserIdentifiable, IName, ICreated, IUpdated
+[Table(ChannelsTable.TableName)]
+public class Channel : IIdentifiable, IHubIdentifiable, IName, IDescription, ICreated, IUpdated
 {
     /// <inheritdoc />
     [Key]
     [Column(IIdentifiable.ColumnName)]
     public Guid Id { get; set; }
-
+    
     /// <inheritdoc />
-    [Column(IUserIdentifiable.ColumnName)]
-    public Guid UserId { get; set; }
-
+    [Column(IHubIdentifiable.ColumnName)]
+    [ForeignKey(HubsTable.TableName)]
+    public Guid HubId { get; set; }
+    
     /// <inheritdoc />
     [Column(IName.ColumnName)]
     [MaxLength(IName.MaxLength)]
     public string Name { get; set; } = string.Empty;
-
+    
     /// <inheritdoc />
-    [Column(ICreated.ColumnName)]
+    [Column(IDescription.ColumnName)]
+    [MaxLength(IDescription.MaxLength)]
+    public string Description { get; set; } = string.Empty;
+    
+    /// <inheritdoc />
     [Required]
+    [Column(ICreated.ColumnName)]
     public DateTimeOffset Created { get; set; }
-
+    
     /// <inheritdoc />
     [Column(IUpdated.ColumnName)]
     public DateTimeOffset? Updated { get; set; }
-
+    
     [NotMapped]
-    public List<Channel> ChannelList { get; set; } = [];
-
-    [NotMapped]
-    public List<HubMembership> MemberList { get; set; } = [];
+    public List<Message> MessageList { get; set; } = [];
 }

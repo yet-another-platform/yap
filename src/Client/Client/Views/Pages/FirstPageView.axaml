@@ -1,0 +1,15 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pages="clr-namespace:Client.ViewModels.Pages"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="pages:FirstPageViewModel"
+             x:Class="Client.Views.Pages.FirstPageView">
+    
+    <StackPanel VerticalAlignment="Center">
+        <TextBlock HorizontalAlignment="Center">You are now in the first page</TextBlock>
+        <Button HorizontalAlignment="Center" Command="{Binding GoToOtherCommand}">Go next</Button>
+    </StackPanel>
+    
+</UserControl>

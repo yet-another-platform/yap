@@ -16,12 +16,14 @@ public class Channel : IIdentifiable, IHubIdentifiable, IName, IDescription, ICr
     /// <inheritdoc />
     [Column(IHubIdentifiable.ColumnName)]
     [ForeignKey(HubsTable.TableName)]
-    public Guid HubId { get; set; }
+    [Required]
+    public required Guid HubId { get; set; }
     
     /// <inheritdoc />
     [Column(IName.ColumnName)]
     [MaxLength(IName.MaxLength)]
-    public string Name { get; set; } = string.Empty;
+    [Required]
+    public required string Name { get; set; }
     
     /// <inheritdoc />
     [Column(IDescription.ColumnName)]
@@ -31,7 +33,7 @@ public class Channel : IIdentifiable, IHubIdentifiable, IName, IDescription, ICr
     /// <inheritdoc />
     [Required]
     [Column(ICreated.ColumnName)]
-    public DateTimeOffset Created { get; set; }
+    public required DateTimeOffset Created { get; set; }
     
     /// <inheritdoc />
     [Column(IUpdated.ColumnName)]

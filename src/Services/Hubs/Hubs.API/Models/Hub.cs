@@ -15,12 +15,14 @@ public class Hub : IIdentifiable, IUserIdentifiable, IName, ICreated, IUpdated
 
     /// <inheritdoc />
     [Column(IUserIdentifiable.ColumnName)]
-    public Guid UserId { get; set; }
+    [Required]
+    public required Guid UserId { get; set; }
 
     /// <inheritdoc />
     [Column(IName.ColumnName)]
     [MaxLength(IName.MaxLength)]
-    public string Name { get; set; } = string.Empty;
+    [Required]
+    public required string Name { get; set; }
 
     /// <inheritdoc />
     [Column(ICreated.ColumnName)]

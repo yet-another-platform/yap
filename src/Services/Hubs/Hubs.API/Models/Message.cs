@@ -16,23 +16,25 @@ public class Message : IIdentifiable<long>, IChannelIdentifiable, IUserIdentifia
     /// <inheritdoc />
     [Column(IChannelIdentifiable.ColumnName)]
     [ForeignKey(ChannelsTable.TableName)]
-    public Guid ChannelId { get; set; }
+    [Required]
+    public required Guid ChannelId { get; set; }
 
     /// <inheritdoc />
     [Column(IUserIdentifiable.ColumnName)]
-    public Guid UserId { get; set; }
+    [Required]
+    public required Guid UserId { get; set; }
 
     /// <summary>
     /// Content of the message
     /// </summary>
     [Column(MessagesTable.Content)]
     [MaxLength(MessagesTable.ContentMaxLength)]
-    public string Content { get; set; } = string.Empty;
+    public required string Content { get; set; }
 
     /// <inheritdoc />
     [Column(ICreated.ColumnName)]
     [Required]
-    public DateTimeOffset Created { get; set; }
+    public required DateTimeOffset Created { get; set; }
 
     /// <inheritdoc />
     [Column(IUpdated.ColumnName)]

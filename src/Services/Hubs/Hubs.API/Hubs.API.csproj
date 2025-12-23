@@ -20,8 +20,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="DatabaseServices\" />
-      <Folder Include="Managers\" />
       <Folder Include="Migrations\" />
     </ItemGroup>
 

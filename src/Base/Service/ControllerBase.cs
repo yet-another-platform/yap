@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Types.Types.Option;
 
@@ -22,12 +23,14 @@ public class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
             case ErrorType.BadRequest:
             case ErrorType.ValidationError:
                 return BadRequest(option.Error.GetErrorWrapper());
+            case ErrorType.Forbidden:
+                return StatusCode((int)HttpStatusCode.Forbidden, option.Error.GetErrorWrapper());
             case ErrorType.ServiceError:
             case ErrorType.Unknown:
 #if DEBUG
-                return StatusCode(500, option.Error.GetErrorWrapper());
+                return StatusCode((int)HttpStatusCode.InternalServerError, option.Error.GetErrorWrapper());
 #else
-                return StatusCode(500);
+                return StatusCode((int)HttpStatusCode.InternalServerError);
 #endif
             default:
                 throw new UnreachableException("CreateActionResult reached unreachable code.");

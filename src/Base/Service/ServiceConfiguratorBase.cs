@@ -81,8 +81,8 @@ public abstract class ServiceConfiguratorBase<TDbContext> : IServiceConfigurator
         builder.Services.AddScoped<Func<IDbConnection>>(_ => () => new NpgsqlConnection(databaseConnectionString));
     }
 
-    private void ConfigureOther(WebApplicationBuilder builder)
+    private static void ConfigureOther(WebApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<Validator>();
+        builder.Services.AddSingleton(typeof(Validator<>));
     }
 }

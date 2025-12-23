@@ -1,36 +1,36 @@
+using System.Reflection;
 using Types.Interfaces.Model;
 
 namespace Types.Validation;
 
-public class Validator
+public class Validator<T>
 {
-    public ValidationResult Validate(object obj)
+    private static readonly Type Type = typeof(T);
+
+    public ValidationResult Validate(T obj)
     {
         var result = new ValidationResult();
-        if (obj is IUsername username && !IUsername.Validate(username))
+        foreach (var iface in Type.GetInterfaces())
         {
-            result.Errors.Add(new ValidationError
-            {
-                PropertyName = nameof(username.Username),
-                Message = "Invalid username format"
-            });
-        }
+            var validateMethod = iface.GetMethod("Validate", BindingFlags.Public | BindingFlags.Static);
 
-        if (obj is IPassword password && !IPassword.Validate(password))
-        {
+            if (validateMethod == null)
+            {
+                continue;
+            }
+
+            bool isValid = (bool)validateMethod.Invoke(null, [obj])!;
+            if (isValid)
+            {
+                continue;
+            }
+
+            var property = iface.GetProperties().Single();
+
             result.Errors.Add(new ValidationError
             {
-                PropertyName = nameof(password.Password),
-                Message = "Invalid password format"
-            });
-        }
-        
-        if (obj is IEmail email && !IEmail.Validate(email))
-        {
-            result.Errors.Add(new ValidationError
-            {
-                PropertyName = nameof(email.Email),
-                Message = "Invalid email format"
+                PropertyName = property.Name,
+                Message = $"Invalid {property.Name} format"
             });
         }
 

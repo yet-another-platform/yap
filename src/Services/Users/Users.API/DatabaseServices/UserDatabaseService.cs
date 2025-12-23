@@ -12,12 +12,9 @@ using Users.API.Models;
 
 namespace Users.API.DatabaseServices;
 
-public class UserDatabaseService : DatabaseServiceBase<User>, IUserDatabaseService
+public class UserDatabaseService(Func<IDbConnection> connectionFactory)
+    : DatabaseServiceBase<User>(connectionFactory, UsersTable.TableName), IUserDatabaseService
 {
-    public UserDatabaseService(Func<IDbConnection> connectionFactory) : base(connectionFactory, UsersTable.TableName)
-    {
-    }
-
     public async Task<Guid> CreateAsync(User entity)
     {
         const string query = $"""

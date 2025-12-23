@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hubs.API.Migrations
 {
     [DbContext(typeof(HubsDatabaseContext))]
-    [Migration("20251222191923_Init")]
-    partial class Init
+    [Migration("20251222231749_InitHubs")]
+    partial class InitHubs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -8,4 +8,5 @@ public enum ErrorType
     NotFound,
     AlreadyExists,
     ServiceError,
+    Forbidden
 }

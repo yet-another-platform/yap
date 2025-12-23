@@ -18,11 +18,12 @@ public class UserManager(
     ILogger<UserManager> logger,
     IConfiguration configuration,
     IUserDatabaseService userDatabaseService,
-    Validator validator)
+    Validator<RegisterDto> registerValidator,
+    Validator<User> userValidator)
 {
     public async Task<Option<LoginResultDto>> RegisterAsync(RegisterDto registerDto)
     {
-        var validationResult = validator.Validate(registerDto);
+        var validationResult = registerValidator.Validate(registerDto);
         if (!validationResult.IsValid)
         {
             return new Error
@@ -160,7 +161,7 @@ public class UserManager(
 
     private Option<string> GenerateJwt(User user)
     {
-        var validationResult = validator.Validate(user);
+        var validationResult = userValidator.Validate(user);
         if (!validationResult.IsValid)
         {
             return new Option<string>(new Error

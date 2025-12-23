@@ -13,8 +13,18 @@ public static class ModelBuilderExtensions
             if (typeof(IIdentifiable).IsAssignableFrom(entityType))
             {
                 modelBuilder.Entity(entityType).HasIndex(nameof(IIdentifiable.Id)).IsUnique();
-                modelBuilder.Entity(entityType).Property<Guid>(nameof(IIdentifiable.Id))
-                    .HasDefaultValueSql("gen_random_uuid()");
+                if (typeof(IIdentifiable<Guid>).IsAssignableFrom(entityType))
+                {
+                    modelBuilder.Entity(entityType).Property<Guid>(nameof(IIdentifiable.Id))
+                        .HasDefaultValueSql("gen_random_uuid()");
+                }
+
+                if (typeof(IIdentifiable<long>).IsAssignableFrom(entityType))
+                {
+                    modelBuilder.Entity(entityType).Property<long>(nameof(IIdentifiable.Id))
+                        .ValueGeneratedOnAdd()
+                        .UseIdentityByDefaultColumn();
+                }
             }
 
             if (typeof(ICreated).IsAssignableFrom(entityType))
@@ -34,7 +44,7 @@ public static class ModelBuilderExtensions
                 modelBuilder.Entity(entityType).Property<bool>(nameof(IDeleted.Deleted))
                     .HasDefaultValue(false);
             }
-            
+
             if (typeof(IDeletedReason).IsAssignableFrom(entityType))
             {
                 modelBuilder.Entity(entityType).Property<DeletedReason>(nameof(IDeletedReason.DeletedReason))

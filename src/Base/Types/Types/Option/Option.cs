@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-
 namespace Types.Types.Option;
 
 public class Option<T>

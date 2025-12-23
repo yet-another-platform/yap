@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Types.Enums;
 using Types.Interfaces.Model;
 using Users.API.Constants.Database;
 using Users.Domain.Enums;

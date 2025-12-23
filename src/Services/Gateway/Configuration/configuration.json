@@ -9,6 +9,14 @@
       ]
     },
     {
+      "UpstreamPathTemplate": "/api/hubs/{everything}",
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "localhost", "Port": 40002 }
+      ]
+    },
+    {
       "UpstreamPathTemplate": "/ws",
       "DownstreamPathTemplate": "/ws",
       "DownstreamScheme": "ws",

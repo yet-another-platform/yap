@@ -1,6 +1,5 @@
 using Types.Interfaces.Database;
 using Types.Types;
-using Types.Types.Option;
 using Users.API.Models;
 
 namespace Users.API.DatabaseServices.Interfaces;

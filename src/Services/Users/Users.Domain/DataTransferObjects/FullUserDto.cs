@@ -1,4 +1,3 @@
-using Types.Enums;
 using Types.Interfaces.Model;
 using Users.Domain.Enums;
 

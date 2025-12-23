@@ -2,7 +2,6 @@ using System.Text;
 using Dapper;
 using Users.API.Constants.Database;
 using Users.API.Helpers;
-using Users.Domain.Enums;
 
 namespace Users.API.Extensions;
 

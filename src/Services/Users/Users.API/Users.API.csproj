@@ -7,24 +7,17 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
-
     <ItemGroup>
-        <Content Include="..\.dockerignore">
-            <Link>.dockerignore</Link>
-        </Content>
+        <ProjectReference Include="..\..\..\Base\Database\Database.csproj"/>
+        <ProjectReference Include="..\..\..\Base\Service\Service.csproj"/>
+        <ProjectReference Include="..\Users.Domain\Users.Domain.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\Base\Database\Database.csproj" />
-      <ProjectReference Include="..\..\..\Base\Service\Service.csproj" />
-      <ProjectReference Include="..\Users.Domain\Users.Domain.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.6">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.6">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
 </Project>

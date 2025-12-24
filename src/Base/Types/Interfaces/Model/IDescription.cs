@@ -1,7 +1,3 @@
-using System.Text.RegularExpressions;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Types.Extensions;
-
 namespace Types.Interfaces.Model;
 
 public interface IDescription

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Types.Extensions;
+using Service.Extensions;
 using Users.API.Managers;
 using Users.API.Models.Convertors;
 using Users.Domain.DataTransferObjects;

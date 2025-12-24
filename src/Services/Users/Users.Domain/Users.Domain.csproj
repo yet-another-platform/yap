@@ -9,7 +9,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\Base\Mq\Mq.csproj"/>
         <ProjectReference Include="..\..\..\Base\Types\Types.csproj"/>
     </ItemGroup>
 

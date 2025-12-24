@@ -15,7 +15,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Image Source="/Assets/yap.png" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" />
+        <Image Grid.Column="0" Grid.Row="0" Source="/Assets/yap.png" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" />
         <TransitioningContentControl Grid.Column="1" Content="{Binding Form}" />
     </Grid>
 </UserControl>

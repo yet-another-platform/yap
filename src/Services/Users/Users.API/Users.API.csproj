@@ -10,6 +10,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\..\Base\Database\Database.csproj"/>
         <ProjectReference Include="..\..\..\Base\Service\Service.csproj"/>
+        <ProjectReference Include="..\..\..\Base\Mq\Mq.csproj"/>
         <ProjectReference Include="..\Users.Domain\Users.Domain.csproj"/>
     </ItemGroup>
 

@@ -2,7 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using Types.Helpers;
+using Service.Helpers;
 using Types.Types;
 using Types.Types.Option;
 using Types.Validation;

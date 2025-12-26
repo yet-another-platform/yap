@@ -1,13 +1,20 @@
 using Hubs.API.Constants.Database;
 using Hubs.API.DatabaseServices.Interfaces;
 using Hubs.API.Models;
+using Hubs.API.Models.Convertors;
 using Hubs.Domain.DataTransferObjects;
+using RealTime.Domain.Mq.Senders;
 using Types.Types;
 using Types.Types.Option;
 
 namespace Hubs.API.Managers;
 
-public class MessageManager(ILogger<MessageManager> logger, IMessageDatabaseService messageDatabaseService, ChannelManager channelManager)
+public class MessageManager(
+    ILogger<MessageManager> logger,
+    IMessageDatabaseService messageDatabaseService,
+    ChannelManager channelManager,
+    PublishMessageSender publishMessageSender,
+    CorrelationId correlationId)
 {
     public async Task<Option<Message>> CreateAsync(GuidChecked userId, GuidChecked channelId, NewMessageDto newMessageDto)
     {
@@ -41,8 +48,16 @@ public class MessageManager(ILogger<MessageManager> logger, IMessageDatabaseServ
             logger.LogError("Failed to create message by user: {UserID} in channel: {ChannelId}", userId, channelId);
             return new Error { Message = "Failed to create message.", Type = ErrorType.ServiceError };
         }
-        
+
         message.Id = messageId;
+
+        bool publishSuccess = await publishMessageSender.PublishAsync(message.ToDto(), correlationId);
+        if (!publishSuccess)
+        {
+            logger.LogError("Failed to send message by user: {UserId} to channel: {ChannelId}", userId, channelId);
+            return new Error { Message = "Failed to send message.", Type = ErrorType.ServiceError };
+        }
+
         return message;
     }
 }

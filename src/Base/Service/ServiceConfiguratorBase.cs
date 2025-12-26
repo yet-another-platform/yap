@@ -13,24 +13,23 @@ using Microsoft.IdentityModel.Tokens;
 using Npgsql;
 using Service.Extensions;
 using Service.Interfaces;
+using Types.Types;
 using Types.Validation;
 
 namespace Service;
 
-public abstract class ServiceConfiguratorBase<TDbContext> : IServiceConfigurator where TDbContext : DbContext
+public abstract class ServiceConfiguratorBase : IServiceConfigurator 
 {
-    protected abstract string MigrationsAssembly { get; }
     protected abstract void ConfigureServices(WebApplicationBuilder builder);
-    public WebApplicationBuilder Configure(WebApplicationBuilder builder)
+    public virtual WebApplicationBuilder Configure(WebApplicationBuilder builder)
     {
         ConfigureGeneral(builder);
-        ConfigureDatabase(builder);
         ConfigureOther(builder);
         ConfigureServices(builder);
         return builder;
     }
 
-    private void ConfigureGeneral(WebApplicationBuilder builder)
+    protected void ConfigureGeneral(WebApplicationBuilder builder)
     {
         var configuration = builder.Configuration;
 
@@ -52,9 +51,43 @@ public abstract class ServiceConfiguratorBase<TDbContext> : IServiceConfigurator
                         new SymmetricSecurityKey(
                             Encoding.UTF8.GetBytes(configuration["Jwt:Key"] ?? throw new InvalidOperationException()))
                 };
+                x.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = ctx =>
+                    {
+                        var path = ctx.HttpContext.Request.Path;
+                        if (!path.StartsWithSegments("/rt") || !string.IsNullOrWhiteSpace(ctx.Token))
+                        {
+                            return Task.CompletedTask;
+                        }
+                        var accessToken = ctx.Request.Query["access_token"];
+                        ctx.Token = accessToken;
+                            
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
         builder.Services.AddMvc();
+    }
+
+    protected static void ConfigureOther(WebApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton(typeof(Validator<>));
+        builder.Services.AddScoped<CorrelationId>();
+    }
+}
+
+public abstract class ServiceConfiguratorWithDatabaseBase<TDbContext> : ServiceConfiguratorBase where TDbContext : DbContext
+{
+    protected abstract string MigrationsAssembly { get; }
+    public override WebApplicationBuilder Configure(WebApplicationBuilder builder)
+    {
+        ConfigureGeneral(builder);
+        ConfigureOther(builder);
+        ConfigureServices(builder);
+        ConfigureDatabase(builder);
+        return builder;
     }
 
     private void ConfigureDatabase(WebApplicationBuilder builder)
@@ -79,10 +112,5 @@ public abstract class ServiceConfiguratorBase<TDbContext> : IServiceConfigurator
 
         builder.Services.AddScoped<IDbConnection>(_ => new NpgsqlConnection(databaseConnectionString));
         builder.Services.AddScoped<Func<IDbConnection>>(_ => () => new NpgsqlConnection(databaseConnectionString));
-    }
-
-    private static void ConfigureOther(WebApplicationBuilder builder)
-    {
-        builder.Services.AddSingleton(typeof(Validator<>));
     }
 }

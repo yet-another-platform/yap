@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Client.Models;
 using Client.Models.Interfaces;
 using Client.Net;
 using Client.ViewModels.Pages;
@@ -9,7 +10,7 @@ using ReactiveUI;
 
 namespace Client.ViewModels.Controls;
 
-public class LoginFormViewModel(IAuthSession auth) : ViewModelBase<LoginFormViewModel>
+public class LoginFormViewModel(IAuthSession auth, RealtimeManager realtimeManager) : ViewModelBase<LoginFormViewModel>
 {
     public string Username { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
@@ -42,5 +43,6 @@ public class LoginFormViewModel(IAuthSession auth) : ViewModelBase<LoginFormView
         }
 
         ResultText = $"You are now logged in as\n{auth.CurrentUser!.Username}";
+        await realtimeManager.ConnectAsync();
     }
 }

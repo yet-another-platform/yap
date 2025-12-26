@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Mq.Interfaces;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using Types.Types;
 using Types.Types.Option;
 
 namespace Mq;
@@ -64,7 +65,7 @@ public abstract class SenderBase<TRequest, TResult> : ISenderBase
         await _channel.BasicConsumeAsync(_replyQueueName, true, consumer, cancellationToken: cancellationToken);
     }
 
-    protected async Task<Option<TResult>> SendInternalAsync(TRequest request, Guid correlationId, CancellationToken cancellationToken)
+    protected async Task<Option<TResult>> SendInternalAsync(TRequest request, CorrelationId correlationId, CancellationToken cancellationToken)
     {
         if (_channel == null)
         {
@@ -78,14 +79,14 @@ public abstract class SenderBase<TRequest, TResult> : ISenderBase
         };
 
         var taskCompletionSource = new TaskCompletionSource<Option<TResult>>(TaskCreationOptions.RunContinuationsAsynchronously);
-        _callbackMapper.TryAdd(correlationId, taskCompletionSource);
+        _callbackMapper.TryAdd(correlationId.Value, taskCompletionSource);
 
         byte[] messageBytes = JsonSerializer.SerializeToUtf8Bytes(request);
         await _channel.BasicPublishAsync(exchange: string.Empty, routingKey: QueueName, mandatory: true, basicProperties: props, body: messageBytes,
             cancellationToken: cancellationToken);
         await using var ctr = cancellationToken.Register(() =>
         {
-            _callbackMapper.TryRemove(correlationId, out _);
+            _callbackMapper.TryRemove(correlationId.Value, out _);
             taskCompletionSource.SetCanceled(cancellationToken);
         });
 

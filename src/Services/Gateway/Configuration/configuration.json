@@ -17,12 +17,14 @@
       ]
     },
     {
-      "UpstreamPathTemplate": "/ws",
-      "DownstreamPathTemplate": "/ws",
-      "DownstreamScheme": "ws",
+      "UpstreamPathTemplate": "/rt/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST" ],
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "localhost", "Port": 50000 }
-      ]
+      ],
+      "WebSocket": true
     }
   ]
 }

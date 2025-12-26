@@ -1,3 +1,5 @@
+using Types.Types;
+
 namespace Types.Extensions;
 
 public static class GuidExtensions
@@ -15,4 +17,6 @@ public static class GuidExtensions
     }
 
     public static bool IsNotEmpty(this Guid guid) => !IsEmpty(guid);
+    
+    public static List<GuidChecked> ToCheckedList(this IEnumerable<Guid> guids) => guids.Select(g => new GuidChecked(g)).ToList();
 }

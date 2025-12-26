@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Extensions;
 using Types.Extensions;
+using Types.Types;
 using ControllerBase = Service.ControllerBase;
 
 namespace Hubs.API.Controllers;

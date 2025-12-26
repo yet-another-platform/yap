@@ -6,7 +6,7 @@ using Users.API.Managers;
 
 namespace Users.API;
 
-public class ServiceConfigurator : ServiceConfiguratorBase<UsersDatabaseContext>
+public class ServiceConfigurator : ServiceConfiguratorWithDatabaseBase<UsersDatabaseContext>
 {
     protected override string MigrationsAssembly => "Users.API";
 

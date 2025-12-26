@@ -8,5 +8,6 @@ public interface IChannelDatabaseService : ICrud<Channel>
 {
     public Task<List<Channel>> ListForHub(GuidChecked hubId);
     public Task<List<Channel>> ListForHubAndUser(GuidChecked hubId, GuidChecked userId);
+    public Task<List<Channel>> ListForHubsAndUser(List<GuidChecked> hubIds, GuidChecked userId);
     public Task<bool> IsUserMember(GuidChecked channelId, GuidChecked userId);
 }

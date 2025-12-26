@@ -36,6 +36,7 @@ public static class ServiceCollectionExtensions
             .AddSingleton<INavigationService>(sp => sp.GetRequiredService<MainWindowViewModel>())
             .AddSingleton<JsonContext>(new JsonContext(new JsonSerializerOptions
                 { PropertyNameCaseInsensitive = true, PropertyNamingPolicy = JsonNamingPolicy.CamelCase }))
+            .AddSingleton<RealtimeManager>()
             .AddSingleton<ViewLocator>();
     }
 

@@ -79,6 +79,22 @@ public class ChannelDatabaseService(Func<IDbConnection> connectionFactory)
         return result.ToList();
     }
 
+    public async Task<List<Channel>> ListForHubsAndUser(List<GuidChecked> hubIds, GuidChecked userId)
+    {
+        var parameters = new { hubIds = hubIds.Select(id => id.Value).ToList(), userId }.ToDynamicParameters();
+        const string query = $"""
+                              SELECT {ChannelsTable.Prefix}.* FROM {ChannelsTable.TableName} AS {ChannelsTable.Prefix}
+                                  JOIN {ChannelMembershipsTable.TableName} AS {ChannelMembershipsTable.Prefix}
+                                       ON {ChannelMembershipsTable.Prefix}.{IChannelIdentifiable.ColumnName} = {ChannelsTable.Prefix}.{IIdentifiable.ColumnName}
+                              WHERE {ChannelsTable.Prefix}.{IHubIdentifiable.ColumnName} = ANY(@hubIds)
+                                  AND {ChannelMembershipsTable.Prefix}.{IUserIdentifiable.ColumnName} = @userId;
+                              """;
+
+        using var connection = ConnectionFactory();
+        var result = await connection.QueryAsync<Channel>(query, parameters);
+        return result.ToList();
+    }
+
     public async Task<bool> IsUserMember(GuidChecked channelId, GuidChecked userId)
     {
         var parameters = new { channelId, userId }.ToDynamicParameters();

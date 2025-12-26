@@ -9,8 +9,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\Base\Mq\Mq.csproj" />
-        <ProjectReference Include="..\..\..\Base\Types\Types.csproj"/>
+      <ProjectReference Include="..\Services\Hubs\Hubs.Domain\Hubs.Domain.csproj" />
+      <ProjectReference Include="..\Services\Users\Users.Domain\Users.Domain.csproj" />
     </ItemGroup>
 
 </Project>

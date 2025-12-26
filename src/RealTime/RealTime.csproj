@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Base\Service\Service.csproj" />
+      <ProjectReference Include="..\RealTime.Domain\RealTime.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="10.0.1" />
+      <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.Json" Version="10.0.1" />
+    </ItemGroup>
+
+</Project>

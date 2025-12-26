@@ -1,7 +1,12 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
+using Types.JsonConvertors;
+
 namespace Types.Types;
 
+[JsonConverter(typeof(GuidCheckedJsonConverter))]
 public readonly struct GuidChecked : IEquatable<GuidChecked>, IComparable<GuidChecked>, IEquatable<Guid>,
-    IComparable<Guid>
+    IComparable<Guid>, IParsable<GuidChecked>
 {
     public Guid Value { get; }
 
@@ -19,19 +24,19 @@ public readonly struct GuidChecked : IEquatable<GuidChecked>, IComparable<GuidCh
 
     public static implicit operator GuidChecked(Guid value) => new(value);
     public static implicit operator Guid(GuidChecked value) => value.Value;
-    
+
     public static bool operator ==(Guid left, GuidChecked right) => left.Equals(right);
     public static bool operator !=(Guid left, GuidChecked right) => !left.Equals(right);
 
-    
+
     public static bool operator ==(GuidChecked left, Guid right) => left.Equals(right);
     public static bool operator !=(GuidChecked left, Guid right) => !left.Equals(right);
-    
+
     public static bool operator >(GuidChecked left, GuidChecked right) => left.Value > right.Value;
     public static bool operator <(GuidChecked left, GuidChecked right) => left.Value < right.Value;
     public static bool operator >=(GuidChecked left, GuidChecked right) => left.Value >= right.Value;
     public static bool operator <=(GuidChecked left, GuidChecked right) => left.Value <= right.Value;
-    
+
     public override string ToString() => Value.ToString();
     public override int GetHashCode() => Value.GetHashCode();
 
@@ -63,5 +68,32 @@ public readonly struct GuidChecked : IEquatable<GuidChecked>, IComparable<GuidCh
     public int CompareTo(Guid other)
     {
         return Value.CompareTo(other);
+    }
+
+    public static GuidChecked Parse(string s) => Parse(s, null);
+
+    public static GuidChecked Parse(string s, IFormatProvider? provider)
+    {
+        return new GuidChecked(Guid.Parse(s));
+    }
+
+    public static bool TryParse([NotNullWhen(true)] string? s, out GuidChecked result) => TryParse(s, null, out result);
+
+    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out GuidChecked result)
+    {
+        if (!Guid.TryParse(s, out var guid))
+        {
+            result = default;
+            return false;
+        }
+
+        if (!IsValid(guid))
+        {
+            result = default;
+            return false;
+        }
+
+        result = new GuidChecked(guid);
+        return true;
     }
 }

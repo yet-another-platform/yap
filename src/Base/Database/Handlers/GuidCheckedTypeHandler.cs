@@ -2,7 +2,7 @@ using System.Data;
 using Dapper;
 using Types.Types;
 
-namespace Types.Handlers;
+namespace Database.Handlers;
 
 public class GuidCheckedTypeHandler : SqlMapper.TypeHandler<GuidChecked>
 {

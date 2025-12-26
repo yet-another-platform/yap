@@ -1,6 +1,6 @@
 using static BCrypt.Net.BCrypt;
 
-namespace Types.Helpers;
+namespace Service.Helpers;
 
 public static class PasswordHelper
 {

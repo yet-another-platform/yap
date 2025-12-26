@@ -1,0 +1,46 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:Client.ViewModels.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="viewModels:RegisterFormViewModel"
+             x:Class="Client.Views.Controls.RegisterFormView">
+
+    <UserControl.Styles>
+        <Style Selector="HyperlinkButton">
+            <Setter Property="TextBlock.TextDecorations" Value="" />
+            <Setter Property="Margin" Value="0,0,0,-1" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
+        </Style>
+    </UserControl.Styles>
+
+    <StackPanel VerticalAlignment="Center" Margin="20">
+        <StackPanel VerticalAlignment="Center" Width="200">
+            <Label Target="EmailBox">Username</Label>
+            <TextBox x:Name="EmailBox" Text="{Binding Email}" />
+        </StackPanel>
+        <Panel Margin="10" />
+        <StackPanel VerticalAlignment="Center" Width="200">
+            <Label Target="UsernameBox">Username</Label>
+            <TextBox x:Name="UsernameBox" Text="{Binding Username}" />
+        </StackPanel>
+        <Panel Margin="10" />
+        <StackPanel VerticalAlignment="Center" Width="200">
+            <Label Target="PasswordBox">Password</Label>
+            <TextBox x:Name="PasswordBox" PasswordChar="*" Text="{Binding Password}" />
+        </StackPanel>
+        <Panel Margin="10" />
+        <TextBlock VerticalAlignment="Center" TextAlignment="Center">
+            <Run>Already have an account?</Run>
+            <LineBreak />
+            <Run>Click</Run>
+            <InlineUIContainer BaselineAlignment="TextBottom">
+                <HyperlinkButton Content="here" Command="{Binding SwitchFormsCommand}" />
+            </InlineUIContainer>
+            <Run>to login.</Run>
+        </TextBlock>
+    </StackPanel>
+
+</UserControl>

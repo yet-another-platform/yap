@@ -3,7 +3,7 @@ using System.Security.Claims;
 using Types.Exceptions;
 using Types.Types;
 
-namespace Types.Extensions;
+namespace Service.Extensions;
 
 public static class ClaimsPrincipalExtensions
 {

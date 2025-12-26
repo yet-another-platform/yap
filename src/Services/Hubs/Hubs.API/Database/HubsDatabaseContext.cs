@@ -1,6 +1,6 @@
+using Database.Extensions;
 using Hubs.API.Models;
 using Microsoft.EntityFrameworkCore;
-using Types.Extensions;
 
 namespace Hubs.API.Database;
 

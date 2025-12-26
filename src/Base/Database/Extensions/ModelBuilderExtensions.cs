@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Types.Enums;
 using Types.Interfaces.Model;
 
-namespace Types.Extensions;
+namespace Database.Extensions;
 
 public static class ModelBuilderExtensions
 {

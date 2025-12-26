@@ -4,10 +4,11 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <IsAotCompatible>true</IsAotCompatible>
+        <VerifyReferenceAotCompatibility>true</VerifyReferenceAotCompatibility>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\Base\Mq\Mq.csproj"/>
         <ProjectReference Include="..\..\..\Base\Types\Types.csproj"/>
     </ItemGroup>
 

@@ -2,6 +2,7 @@ using System.Data;
 using System.Text;
 using System.Text.Json.Serialization;
 using Dapper;
+using Database.Handlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,6 @@ using Microsoft.IdentityModel.Tokens;
 using Npgsql;
 using Service.Extensions;
 using Service.Interfaces;
-using Types.Handlers;
 using Types.Validation;
 
 namespace Service;

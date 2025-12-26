@@ -3,6 +3,7 @@ using Hubs.API.Models.Convertors;
 using Hubs.Domain.DataTransferObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.Extensions;
 using Types.Extensions;
 using ControllerBase = Service.ControllerBase;
 

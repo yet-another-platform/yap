@@ -1,5 +1,5 @@
+using Database.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Types.Extensions;
 using Users.API.Models;
 
 namespace Users.API.Database;

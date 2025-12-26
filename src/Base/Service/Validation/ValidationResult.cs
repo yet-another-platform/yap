@@ -1,6 +1,6 @@
 using Types.Types.Option;
 
-namespace Types.Validation;
+namespace Service.Validation;
 
 public class ValidationResult
 {

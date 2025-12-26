@@ -19,7 +19,7 @@ public class RealtimeManager(ILogger<RealtimeManager> logger, IAuthSession authS
         }
 
         _hubConnection = new HubConnectionBuilder()
-            .WithUrl("http://localhost:50000/rt/chat",
+            .WithUrl("http://localhost:40000/rt/chat",
                 (options) => { options.AccessTokenProvider = async () => await Task.FromResult(authSession.Token); })
             .WithAutomaticReconnect()
             .Build();

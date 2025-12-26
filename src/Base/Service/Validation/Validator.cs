@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Types.Validation;
+namespace Service.Validation;
 
 public class Validator<T>
 {

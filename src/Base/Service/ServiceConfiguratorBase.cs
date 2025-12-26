@@ -13,8 +13,8 @@ using Microsoft.IdentityModel.Tokens;
 using Npgsql;
 using Service.Extensions;
 using Service.Interfaces;
+using Service.Validation;
 using Types.Types;
-using Types.Validation;
 
 namespace Service;
 

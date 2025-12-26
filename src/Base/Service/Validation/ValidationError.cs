@@ -1,4 +1,4 @@
-namespace Types.Validation;
+namespace Service.Validation;
 
 public class ValidationError
 {

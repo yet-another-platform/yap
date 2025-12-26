@@ -8,6 +8,6 @@ await builder.ConfigureAsync<ServiceConfigurator>();
 var app = builder.Build();
 
 app.UseHttpsRedirection();
-app.MapHub<ChatHub>("/rt/chat");
+app.MapHub<ChatHub>("/chat");
 
 await app.RunAsync();

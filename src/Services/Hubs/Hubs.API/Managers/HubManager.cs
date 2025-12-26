@@ -1,10 +1,10 @@
 using Hubs.API.DatabaseServices.Interfaces;
 using Hubs.API.Models;
 using Hubs.Domain.DataTransferObjects;
+using Service.Validation;
 using Types.Extensions;
 using Types.Types;
 using Types.Types.Option;
-using Types.Validation;
 
 namespace Hubs.API.Managers;
 

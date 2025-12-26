@@ -11,6 +11,7 @@ public static class GatewayServiceConfigurator
             .AddJsonFile(Path.Combine("Configuration", $"configuration.{builder.Environment.EnvironmentName}.json"),
                 true, true);
         builder.Services.AddOcelot(builder.Configuration);
+        builder.Services.AddSignalR();
         return builder;
     }
 
